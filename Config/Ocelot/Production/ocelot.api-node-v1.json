@@ -1,0 +1,18 @@
+{
+    "Routes": [
+        {
+            "UpstreamHttpMethod": [
+                "Get"
+            ],
+            "UpstreamPathTemplate": "/api/v1/{url}",
+            "DownstreamPathTemplate": "/{url}",
+            "DownstreamScheme": "$EXTERNAL_API_SCHEME",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "$EXTERNAL_API_HOST",
+                    "Port": "$EXTERNAL_API_PORT"
+                }
+            ]
+        }
+    ]
+}

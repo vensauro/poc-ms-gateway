@@ -1,0 +1,32 @@
+{
+  "Routes": [
+    {
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "UpstreamPathTemplate": "/messenger/v1/resources",
+      "DownstreamPathTemplate": "/publish",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ]
+    },
+    {
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "UpstreamPathTemplate": "/messenger/v1/test",
+      "DownstreamPathTemplate": "/api/test",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ]
+    }
+  ]
+}
