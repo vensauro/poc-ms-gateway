@@ -1,4 +1,4 @@
-namespace DotnetApi;
+namespace PocMsGateway;
 
 public class WeatherForecast
 {

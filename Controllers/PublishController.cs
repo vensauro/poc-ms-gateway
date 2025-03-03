@@ -1,7 +1,7 @@
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using DotnetApi.Messages;
+using PocMsGateway.Messages;
 
 
 [Route("publish")]

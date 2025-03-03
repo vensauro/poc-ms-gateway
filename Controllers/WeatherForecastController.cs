@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace DotnetApi.Controllers;
+namespace PocMsGateway.Controllers;
 
 [ApiController]
 [Route("api/test")]

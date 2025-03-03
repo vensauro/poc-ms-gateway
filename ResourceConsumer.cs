@@ -1,7 +1,7 @@
 using MassTransit;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
-using DotnetApi.Messages;
+using PocMsGateway.Messages;
 
 public class ResourceConsumer : IConsumer<ResourceCreated>
 {

@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "DotnetApi": {
+    "PocMsGateway": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
