@@ -1,6 +1,7 @@
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using MassTransit;
+using PocMsGateway.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,7 @@ builder.WebHost.UseUrls("http://localhost:5000");
 // Configurar MassTransit com RabbitMQ e consumidor
 builder.Services.AddMassTransit(x =>
 {
-    x.AddConsumer<ResourceConsumer>(); // Registrar o consumidor
+    x.AddConsumer<ResourceConsumer>();
     x.UsingRabbitMq((context, cfg) =>
     {
         cfg.Host("rabbitmq://localhost", h =>
@@ -39,6 +40,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// builder.Services.AddTransient<IMessagePublisher, MessagePublisher>();
+builder.Services.AddScoped<IMessagePublisher, MessagePublisher>();
+
 var app = builder.Build();
 
 app.UseRouting(); // Habilita o roteamento padrão
@@ -54,25 +58,15 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 // Garantir que as Controllers sejam carregadas antes do Ocelot
-// app.MapControllers();
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapControllers(); // Mantém as controllers funcionando
+    endpoints.MapControllers();
 });
 
-
 // Rota de Health Check manual (caso necessário)
-// app.MapGet("/health", () => {
-//     Console.WriteLine("🚀 Rota /health foi chamada!");
-//     return Results.Ok(new { Status = true });
-// });
-app.MapWhen(ctx => ctx.Request.Path.StartsWithSegments("/health"), appBuilder =>
-{
-    appBuilder.Run(async context =>
-    {
-        context.Response.ContentType = "application/json";
-        await context.Response.WriteAsync("{\"status\": true}");
-    });
+app.MapGet("/health", () => {
+    Console.WriteLine("🚀 Rota /health foi chamada!");
+    return Results.Ok(new { Status = true });
 });
 
 // Habilitar Logs de Debug para Ocelot

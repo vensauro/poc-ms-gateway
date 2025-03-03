@@ -1,0 +1,32 @@
+{
+    "Routes": [
+        {
+            "UpstreamHttpMethod": [
+                "Post"
+            ],
+            "UpstreamPathTemplate": "/messaging/v1/resources",
+            "DownstreamPathTemplate": "/publish",
+            "DownstreamScheme": "$MESSAGING_SCHEME",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "$MESSAGING_HOST",
+                    "Port": "$MESSAGING_PORT"
+                }
+            ]
+        },
+        {
+            "UpstreamHttpMethod": [
+                "Get"
+            ],
+            "UpstreamPathTemplate": "/messaging/v1/test",
+            "DownstreamPathTemplate": "/gateway/v1/test",
+            "DownstreamScheme": "$GATEWAY_SCHEME",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "$GATEWAY_HOST",
+                    "Port": "$GATEWAY_PORT"
+                }
+            ]
+        }
+    ]
+}

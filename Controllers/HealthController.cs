@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace PocMsGateway.Controllers;
 
+[Route("test")]
 [ApiController]
-[Route("api/test")]
 public class WeatherForecastController : ControllerBase
 {
     [HttpGet]

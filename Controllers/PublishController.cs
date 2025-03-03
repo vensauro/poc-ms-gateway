@@ -1,24 +1,23 @@
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using PocMsGateway.Messages;
-
+using PocMsGateway.Messaging;
 
 [Route("publish")]
 [ApiController]
 public class PublishController : ControllerBase
 {
-    private readonly IPublishEndpoint _publishEndpoint;
+    private readonly IMessagePublisher _publishMessage;
 
-    public PublishController(IPublishEndpoint publishEndpoint)
+    public PublishController(IMessagePublisher publishMessage)
     {
-        _publishEndpoint = publishEndpoint;
+        _publishMessage = publishMessage;
     }
 
     [HttpPost]
     public async Task<IActionResult> PublishResource([FromBody] ResourceCreated resource)
     {
-        await _publishEndpoint.Publish(resource);
+        await _publishMessage.PublishMessage(resource);
         return Ok(new { Message = "Resource published!" });
     }
 }

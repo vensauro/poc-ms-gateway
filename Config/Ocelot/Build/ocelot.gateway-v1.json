@@ -1,0 +1,20 @@
+{
+  "Routes": [
+    {
+      "UpstreamHttpMethod": [
+        "Get",
+        "Put",
+        "Post"
+      ],
+      "UpstreamPathTemplate": "/gateway/v1/{url}",
+      "DownstreamPathTemplate": "/{url}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ]
+    }
+  ]
+}

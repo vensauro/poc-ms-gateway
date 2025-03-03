@@ -4,7 +4,7 @@
       "UpstreamHttpMethod": [
         "Post"
       ],
-      "UpstreamPathTemplate": "/messenger/v1/resources",
+      "UpstreamPathTemplate": "/messaging/v1/resources",
       "DownstreamPathTemplate": "/publish",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -18,8 +18,8 @@
       "UpstreamHttpMethod": [
         "Get"
       ],
-      "UpstreamPathTemplate": "/messenger/v1/test",
-      "DownstreamPathTemplate": "/api/test",
+      "UpstreamPathTemplate": "/messaging/v1/test",
+      "DownstreamPathTemplate": "/gateway/v1/test",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
