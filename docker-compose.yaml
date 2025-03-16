@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-alpine
+    container_name: rabbitmq
+    restart: unless-stopped
+    networks:
+      - app_network
+    ports:
+      - "5672:5672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RabbitMQ__Username}
+      - RABBITMQ_DEFAULT_PASS=${RabbitMQ__Password}
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  poc-ms-gateway:
+    image: poc-ms-gateway
+    container_name: poc-ms-gateway
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - app_network
+    ports:
+      - "5000:5000"
+    environment:
+      - RabbitMQ__Host=${RabbitMQ__Host}
+      - RabbitMQ__Username=${RabbitMQ__Username}
+      - RabbitMQ__Password=${RabbitMQ__Password}
+
+volumes:
+  rabbitmq_data:
+    driver: local
+
+networks:
+  app_network:
+    driver: bridge

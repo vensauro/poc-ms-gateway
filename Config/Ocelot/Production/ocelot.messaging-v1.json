@@ -4,7 +4,7 @@
             "UpstreamHttpMethod": [
                 "Post"
             ],
-            "UpstreamPathTemplate": "/messaging/v1/resources",
+            "UpstreamPathTemplate": "/messaging/v1/publish",
             "DownstreamPathTemplate": "/publish",
             "DownstreamScheme": "$MESSAGING_SCHEME",
             "DownstreamHostAndPorts": [

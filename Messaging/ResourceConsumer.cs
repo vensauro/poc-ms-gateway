@@ -1,7 +1,7 @@
 using MassTransit;
 using PocMsGateway.Messaging;
 
-public class ResourceConsumer : IConsumer<ResourceCreated>
+public class ResourceConsumer : IConsumer<ResourcePublisher>
 {
     private readonly ILogger<ResourceConsumer> _logger;
 
@@ -10,7 +10,7 @@ public class ResourceConsumer : IConsumer<ResourceCreated>
         _logger = logger;
     }
 
-    public Task Consume(ConsumeContext<ResourceCreated> context)
+    public Task Consume(ConsumeContext<ResourcePublisher> context)
     {
         _logger.LogInformation("Resource received: {Name} - {Description}", 
             context.Message.Name, context.Message.Description);

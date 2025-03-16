@@ -4,9 +4,16 @@ using MassTransit;
 using PocMsGateway.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddEnvironmentVariables();
+
+// builder.Environment.IsDevelopment()
+string serverHost = builder.Configuration["Server:Host"];
+string rabbitmqHost = builder.Configuration["RabbitMQ:Host"];
+string rabbitmqUser = builder.Configuration["RabbitMQ:Username"];
+string rabbitmqPassword = builder.Configuration["RabbitMQ:Password"];
 
 // Configurar Host antes de qualquer outra configuração
-builder.WebHost.UseUrls("http://localhost:5000");
+builder.WebHost.UseUrls(serverHost);
 
 // Configurar MassTransit com RabbitMQ e consumidor
 builder.Services.AddMassTransit(x =>
@@ -14,12 +21,12 @@ builder.Services.AddMassTransit(x =>
     x.AddConsumer<ResourceConsumer>();
     x.UsingRabbitMq((context, cfg) =>
     {
-        cfg.Host("rabbitmq://localhost", h =>
+        cfg.Host(rabbitmqHost, h =>
         {
-            h.Username("guest");
-            h.Password("guest");
+            h.Username(rabbitmqUser);
+            h.Password(rabbitmqPassword);
         });
-        cfg.ReceiveEndpoint("resource-queue", e =>
+        cfg.ReceiveEndpoint("input-queue", e =>
         {
             e.ConfigureConsumer<ResourceConsumer>(context);
         });

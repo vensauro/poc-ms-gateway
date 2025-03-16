@@ -6,7 +6,7 @@
     "ocelot": "set -a; . ./.env.ocelot; set +a; for FILE in ./Config/Ocelot/Production/*.json; do echo $FILE; cat $FILE | jq 'walk(if type == \"string\" and ((startswith(\"$\"))) then env[.[1:]] else . end)' > ./Config/Ocelot/Build/$(basename \"$FILE\"); done;",
     "ocelot:staging": "set -a; . ./.env.ocelot; . ./.env.staging.ocelot; set +a; for FILE in ./Config/Ocelot/Production/*.json; do echo $FILE; cat $FILE | jq 'walk(if type == \"string\" and ((startswith(\"$\"))) then env[.[1:]] else . end)' > ./Config/Ocelot/Build/$(basename \"$FILE\"); done;",
     "ocelot:dev": "set -a; . ./.env.ocelot; . ./.env.dev.ocelot;  for FILE in ./Config/Ocelot/Production/*.json; do echo $FILE; cat $FILE | jq 'walk(if type == \"string\" and ((startswith(\"$\"))) then env[.[1:]] else . end)' > ./Config/Ocelot/Development/$(basename \"$FILE\"); done;",
-    "build:image": "echo docker build .",
-    "run:image": "echo docker run"
+    "build:image": "docker build --no-cache -t poc-ms-gateway .",
+    "run:image": "docker run -p 5000:5000 poc-ms-gateway"
   }
 }

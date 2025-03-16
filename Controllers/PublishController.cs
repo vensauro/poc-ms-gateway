@@ -15,9 +15,9 @@ public class PublishController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> PublishResource([FromBody] ResourceCreated resource)
+    public async Task<IActionResult> Publish([FromBody] ResourcePublisher resource)
     {
         await _publishMessage.PublishMessage(resource);
-        return Ok(new { Message = "Resource published!" });
+        return Ok(new { Message = "Message published!" });
     }
 }

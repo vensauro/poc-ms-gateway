@@ -38,3 +38,4 @@ ocelotsettings.Development.json
 appsettings.Development.json
 .env.dev.ocelot
 ocelot.json
+.env

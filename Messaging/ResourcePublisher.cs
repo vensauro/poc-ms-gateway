@@ -1,12 +1,12 @@
 using MassTransit;
 namespace PocMsGateway.Messaging;
 
-public record ResourceCreated
+public record ResourcePublisher
 {
     public string? Name { get; set; }
     public string? Description { get; set; }
 
-    public ResourceCreated(string name, string description)
+    public ResourcePublisher(string name, string description)
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));
         Description = description ?? throw new ArgumentNullException(nameof(description));
@@ -15,7 +15,7 @@ public record ResourceCreated
 
 public interface IMessagePublisher
 {
-    Task PublishMessage(ResourceCreated resource);
+    Task PublishMessage(ResourcePublisher resource);
 }
 
 public class MessagePublisher : IMessagePublisher
@@ -27,7 +27,7 @@ public class MessagePublisher : IMessagePublisher
         _publishEndpoint = publishEndpoint;
     }
 
-    public async Task PublishMessage(ResourceCreated resource)
+    public async Task PublishMessage(ResourcePublisher resource)
     {
         await _publishEndpoint.Publish(resource);
     }
