@@ -22,4 +22,39 @@ namespace PocMsGateway.DTOs
         public string Description { get; init; } = string.Empty;
         public string CreatedAt { get; init; } = string.Empty;
     }
+
+    public record ListTaskRequest
+    {
+        public string UserId { get; set; } = null!;
+        public DateTime From { get; set; }
+        public DateTime To { get; set; }
+    }
+
+    public record ListTaskData
+    {
+        public DateTime From { get; set; }
+        public DateTime To { get; set; }
+    }
+
+    public record GetTaskRequest
+    {
+        public string UserId { get; set; } = null!;
+        public int TaskId { get; set; }
+    }
+
+    public record DeleteTaskRequest
+    {
+        public string UserId { get; set; } = null!;
+        public int TaskId { get; set; }
+    }
+
+    public record TaskGetPayload
+    {
+        public int TaskId { get; set; }
+    }
+
+    public record TaskDeletePayload
+    {
+        public int TaskId { get; set; }
+    }
 }

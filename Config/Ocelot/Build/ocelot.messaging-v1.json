@@ -4,8 +4,64 @@
       "UpstreamHttpMethod": [
         "Post"
       ],
-      "UpstreamPathTemplate": "/messaging/v1/publish",
-      "DownstreamPathTemplate": "/publish",
+      "UpstreamPathTemplate": "/messaging/v1/tasks/create",
+      "DownstreamPathTemplate": "/publish/tasks/create",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ]
+    },
+    {
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "UpstreamPathTemplate": "/messaging/v1/tasks/list",
+      "DownstreamPathTemplate": "/publish/tasks/list",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ]
+    },
+    {
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "UpstreamPathTemplate": "/messaging/v1/tasks/get",
+      "DownstreamPathTemplate": "/publish/tasks/get",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ]
+    },
+    {
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "UpstreamPathTemplate": "/messaging/v1/tasks/delete",
+      "DownstreamPathTemplate": "/publish/tasks/delete",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ]
+    },
+    {
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "UpstreamPathTemplate": "/messaging/v1/notifications/send",
+      "DownstreamPathTemplate": "/publish/notifications/send",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {

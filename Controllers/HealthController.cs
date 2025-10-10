@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace PocMsGateway.Controllers;
 
-[Route("test")]
+[Route("health")]
 [ApiController]
 public class WeatherForecastController : ControllerBase
 {

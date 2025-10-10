@@ -13,7 +13,7 @@ public class EventsController : ControllerBase
         _publisher = publisher;
     }
 
-    [HttpPost("tasks")]
+    [HttpPost("tasks/create")]
     public async Task<IActionResult> CreateTask([FromBody] TaskRequest request)
     {
         var evt = new BaseEvent<TaskCreatedData>
@@ -28,8 +28,63 @@ public class EventsController : ControllerBase
             OccurredAt = DateTime.UtcNow.ToString("o")
         };
 
-        await _publisher.PublishEvent(evt, "task_queue");
+        await _publisher.PublishEventAsync("task_queue", evt);
         return Ok(new { Message = "Task enviada para fila!" });
+    }
+
+    [HttpPost("tasks/list")]
+    public async Task<IActionResult> ListTasks([FromBody] ListTaskRequest request)
+    {
+        var evt = new BaseEvent<ListTaskData>
+        {
+            Type = "task.list",
+            UserId = request.UserId,
+            Data = new ListTaskData
+            {
+                From = request.From,
+                To = request.To
+            },
+            OccurredAt = DateTime.UtcNow.ToString("o")
+        };
+
+        await _publisher.PublishEventAsync("task_queue", evt);
+        return Ok(new { Message = "List task request publicada!" });
+    }
+
+    [HttpPost("tasks/get")]
+    public async Task<IActionResult> GetTask([FromBody] GetTaskRequest request)
+    {
+        var evt = new BaseEvent<TaskGetPayload>
+        {
+            Type = "task.get",
+            UserId = request.UserId,
+            Data = new TaskGetPayload
+            {
+                TaskId = request.TaskId
+            },
+            OccurredAt = DateTime.UtcNow.ToString("o")
+        };
+
+        await _publisher.PublishEventAsync("task_queue", evt);
+        return Ok(new { Message = "Task get command published!" });
+    }
+
+    [HttpPost("tasks/delete")]
+    public async Task<IActionResult> DeleteTask([FromBody] DeleteTaskRequest request)
+    {
+        var evt = new BaseEvent<TaskDeletePayload>
+        {
+            Type = "task.delete",
+            UserId = request.UserId,
+            Data = new TaskDeletePayload
+            {
+                TaskId = request.TaskId
+            },
+            OccurredAt = DateTime.UtcNow.ToString("o")
+        };
+
+        await _publisher.PublishEventAsync("task_queue", evt);
+        return Ok(new { Message = "Task delete command published!" });
     }
 
     [HttpPost("notifications")]
@@ -47,7 +102,8 @@ public class EventsController : ControllerBase
             },
             OccurredAt = DateTime.UtcNow.ToString("o")
         };
-        await _publisher.PublishEvent(evt, "notification_queue");
-        return Ok(new { Message = "Notification message published!" });
+
+        await _publisher.PublishEventAsync("notification_queue", evt);
+        return Ok(new { Message = "Notification message publicada!" });
     }
 }

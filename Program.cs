@@ -2,6 +2,7 @@ using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using MassTransit;
 using PocMsGateway.Messaging;
+using PocMsGateway.DTOs;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
@@ -13,22 +14,34 @@ string rabbitmqUser = builder.Configuration["RabbitMQ:Username"];
 string rabbitmqPassword = builder.Configuration["RabbitMQ:Password"];
 
 // Configurar Host antes de qualquer outra configuração
-builder.WebHost.UseUrls(serverHost);
+// builder.WebHost.UseUrls(serverHost);
+builder.WebHost.UseUrls("http://0.0.0.0:5000");
 
 // Configurar MassTransit com RabbitMQ e consumidor
 builder.Services.AddMassTransit(x =>
 {
-    x.AddConsumer<ResourceConsumer>();
+    x.AddConsumer<ResourceConsumer<TaskCreatedData>>();
+    x.AddConsumer<ResourceConsumer<ListTaskData>>();
+    x.AddConsumer<ResourceConsumer<TaskGetPayload>>();
+    x.AddConsumer<ResourceConsumer<TaskDeletePayload>>();
+    x.AddConsumer<ResourceConsumer<NotificationData>>();
     x.UsingRabbitMq((context, cfg) =>
     {
-        cfg.Host(rabbitmqHost, h =>
+        cfg.Host("rabbitmq", h =>
         {
             h.Username(rabbitmqUser);
             h.Password(rabbitmqPassword);
         });
-        cfg.ReceiveEndpoint("input-queue", e =>
+        cfg.ReceiveEndpoint("task_queue", e =>
         {
-            e.ConfigureConsumer<ResourceConsumer>(context);
+            e.ConfigureConsumer<ResourceConsumer<TaskCreatedData>>(context);
+            e.ConfigureConsumer<ResourceConsumer<ListTaskData>>(context);
+            e.ConfigureConsumer<ResourceConsumer<TaskGetPayload>>(context);
+            e.ConfigureConsumer<ResourceConsumer<TaskDeletePayload>>(context);
+        });
+        cfg.ReceiveEndpoint("notification_queue", e =>
+        {
+            e.ConfigureConsumer<ResourceConsumer<NotificationData>>(context);
         });
     });
 });
@@ -78,5 +91,19 @@ app.MapGet("/health", () => {
 
 // Habilitar Logs de Debug para Ocelot
 app.UseOcelot().Wait();
+
+app.Use(async (context, next) =>
+{
+    try
+    {
+        await next.Invoke();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ Exception capturada: {ex}");
+        context.Response.StatusCode = 500;
+        await context.Response.WriteAsync("Erro interno detectado. Veja logs.");
+    }
+});
 
 app.Run();
