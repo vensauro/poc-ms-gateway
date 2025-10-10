@@ -1,4 +1,5 @@
 using MassTransit;
+using PocMsGateway.DTOs;
 namespace PocMsGateway.Messaging;
 
 public record ResourcePublisher
@@ -15,7 +16,7 @@ public record ResourcePublisher
 
 public interface IMessagePublisher
 {
-    Task PublishMessage(ResourcePublisher resource);
+    Task PublishEvent<T>(BaseEvent<T> evt, string queueName);
 }
 
 public class MessagePublisher : IMessagePublisher
@@ -27,8 +28,8 @@ public class MessagePublisher : IMessagePublisher
         _publishEndpoint = publishEndpoint;
     }
 
-    public async Task PublishMessage(ResourcePublisher resource)
+    public async Task PublishEvent<T>(BaseEvent<T> evt, string queueName)
     {
-        await _publishEndpoint.Publish(resource);
+        await _publishEndpoint.Publish(evt);
     }
 }

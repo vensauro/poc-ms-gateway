@@ -2,13 +2,24 @@ namespace PocMsGateway.DTOs
 {
     public record TaskRequest
     {
-        public string Name { get; init; } = string.Empty;
+        public string UserId { get; init; } = string.Empty;
         public string Description { get; init; } = string.Empty;
+        public string CreatedAt { get; init; } = string.Empty;
     }
 
-    public record NotificationRequest
+    public record BaseEvent<T>
     {
-        public string Title { get; init; } = string.Empty;
-        public string Message { get; init; } = string.Empty;
+        public string Type { get; init; } = string.Empty;
+        public string CorrelationId { get; init; } = Guid.NewGuid().ToString();
+        public string UserId { get; init; } = string.Empty;
+        public T Data { get; init; } = default!;
+        public string OccurredAt { get; init; } = DateTime.UtcNow.ToString("o");
+    }
+
+    public record TaskCreatedData
+    {
+        public int? Id { get; init; } = null;
+        public string Description { get; init; } = string.Empty;
+        public string CreatedAt { get; init; } = string.Empty;
     }
 }
