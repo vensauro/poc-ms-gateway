@@ -1,0 +1,60 @@
+{
+    "Routes": [
+        {
+            "UpstreamHttpMethod": [
+                "Post"
+            ],
+            "UpstreamPathTemplate": "/tasks/v1/create",
+            "DownstreamPathTemplate": "/messaging/v1/tasks/create",
+            "DownstreamScheme": "$GATEWAY_SCHEME",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "$GATEWAY_HOST",
+                    "Port": "$GATEWAY_PORT"
+                }
+            ]
+        },
+        {
+            "UpstreamHttpMethod": [
+                "Get"
+            ],
+            "UpstreamPathTemplate": "/tasks/v1/list",
+            "DownstreamPathTemplate": "/tasks/v1/",
+            "DownstreamScheme": "$TASKS_API_SCHEME",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "$TASKS_API_HOST",
+                    "Port": "$TASKS_API_PORT"
+                }
+            ]
+        },
+        {
+            "UpstreamHttpMethod": [
+                "Get"
+            ],
+            "UpstreamPathTemplate": "/tasks/v1/get/{id}",
+            "DownstreamPathTemplate": "/tasks/v1/{id}",
+            "DownstreamScheme": "$TASKS_API_SCHEME",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "$TASKS_API_HOST",
+                    "Port": "$TASKS_API_PORT"
+                }
+            ]
+        },
+        {
+            "UpstreamHttpMethod": [
+                "Delete"
+            ],
+            "UpstreamPathTemplate": "/tasks/v1/delete",
+            "DownstreamPathTemplate": "/messaging/v1/tasks/delete",
+            "DownstreamScheme": "$GATEWAY_SCHEME",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "$GATEWAY_HOST",
+                    "Port": "$GATEWAY_PORT"
+                }
+            ]
+        }
+    ]
+}

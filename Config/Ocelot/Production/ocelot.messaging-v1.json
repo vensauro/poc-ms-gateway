@@ -18,34 +18,6 @@
             "UpstreamHttpMethod": [
                 "Post"
             ],
-            "UpstreamPathTemplate": "/messaging/v1/tasks/list",
-            "DownstreamPathTemplate": "/publish/tasks/list",
-            "DownstreamScheme": "$MESSAGING_SCHEME",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "$MESSAGING_HOST",
-                    "Port": "$MESSAGING_PORT"
-                }
-            ]
-        },
-        {
-            "UpstreamHttpMethod": [
-                "Post"
-            ],
-            "UpstreamPathTemplate": "/messaging/v1/tasks/get",
-            "DownstreamPathTemplate": "/publish/tasks/get",
-            "DownstreamScheme": "$MESSAGING_SCHEME",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "$MESSAGING_HOST",
-                    "Port": "$MESSAGING_PORT"
-                }
-            ]
-        },
-        {
-            "UpstreamHttpMethod": [
-                "Post"
-            ],
             "UpstreamPathTemplate": "/messaging/v1/tasks/delete",
             "DownstreamPathTemplate": "/publish/tasks/delete",
             "DownstreamScheme": "$MESSAGING_SCHEME",
@@ -67,20 +39,6 @@
                 {
                     "Host": "$MESSAGING_HOST",
                     "Port": "$MESSAGING_PORT"
-                }
-            ]
-        },
-        {
-            "UpstreamHttpMethod": [
-                "Get"
-            ],
-            "UpstreamPathTemplate": "/messaging/v1/test",
-            "DownstreamPathTemplate": "/gateway/v1/test",
-            "DownstreamScheme": "$GATEWAY_SCHEME",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "$GATEWAY_HOST",
-                    "Port": "$GATEWAY_PORT"
                 }
             ]
         }

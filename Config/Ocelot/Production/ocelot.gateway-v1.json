@@ -2,7 +2,7 @@
     "Routes": [
         {
             "UpstreamHttpMethod": [
-                "Get", "Put", "Post"
+                "Get", "Put", "Post", "Delete"
             ],
             "UpstreamPathTemplate": "/gateway/v1/{url}",
             "DownstreamPathTemplate": "/{url}",

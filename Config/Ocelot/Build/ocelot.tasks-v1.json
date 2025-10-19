@@ -1,0 +1,60 @@
+{
+  "Routes": [
+    {
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "UpstreamPathTemplate": "/tasks/v1/create",
+      "DownstreamPathTemplate": "/messaging/v1/tasks/create",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ]
+    },
+    {
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "UpstreamPathTemplate": "/tasks/v1/list",
+      "DownstreamPathTemplate": "/tasks/v1/",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "ms-node",
+          "Port": "3000"
+        }
+      ]
+    },
+    {
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "UpstreamPathTemplate": "/tasks/v1/get/{id}",
+      "DownstreamPathTemplate": "/tasks/v1/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "ms-node",
+          "Port": "3000"
+        }
+      ]
+    },
+    {
+      "UpstreamHttpMethod": [
+        "Delete"
+      ],
+      "UpstreamPathTemplate": "/tasks/v1/delete",
+      "DownstreamPathTemplate": "/messaging/v1/tasks/delete",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ]
+    }
+  ]
+}

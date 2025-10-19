@@ -4,7 +4,8 @@
       "UpstreamHttpMethod": [
         "Get",
         "Put",
-        "Post"
+        "Post",
+        "Delete"
       ],
       "UpstreamPathTemplate": "/gateway/v1/{url}",
       "DownstreamPathTemplate": "/{url}",

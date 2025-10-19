@@ -32,43 +32,6 @@ public class EventsController : ControllerBase
         return Ok(new { Message = "Task enviada para fila!" });
     }
 
-    [HttpPost("tasks/list")]
-    public async Task<IActionResult> ListTasks([FromBody] ListTaskRequest request)
-    {
-        var evt = new BaseEvent<ListTaskData>
-        {
-            Type = "task.list",
-            UserId = request.UserId,
-            Data = new ListTaskData
-            {
-                From = request.From,
-                To = request.To
-            },
-            OccurredAt = DateTime.UtcNow.ToString("o")
-        };
-
-        await _publisher.PublishEventAsync("task_queue", evt);
-        return Ok(new { Message = "List task request publicada!" });
-    }
-
-    [HttpPost("tasks/get")]
-    public async Task<IActionResult> GetTask([FromBody] GetTaskRequest request)
-    {
-        var evt = new BaseEvent<TaskGetPayload>
-        {
-            Type = "task.get",
-            UserId = request.UserId,
-            Data = new TaskGetPayload
-            {
-                TaskId = request.TaskId
-            },
-            OccurredAt = DateTime.UtcNow.ToString("o")
-        };
-
-        await _publisher.PublishEventAsync("task_queue", evt);
-        return Ok(new { Message = "Task get command published!" });
-    }
-
     [HttpPost("tasks/delete")]
     public async Task<IActionResult> DeleteTask([FromBody] DeleteTaskRequest request)
     {

@@ -15,6 +15,10 @@ string rabbitmqPassword = builder.Configuration["RabbitMQ:Password"];
 
 // Configurar Host antes de qualquer outra configuração
 // builder.WebHost.UseUrls(serverHost);
+
+Console.WriteLine(rabbitmqHost);
+Console.WriteLine(serverHost);
+
 builder.WebHost.UseUrls("http://0.0.0.0:5000");
 
 // Configurar MassTransit com RabbitMQ e consumidor
