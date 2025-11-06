@@ -110,9 +110,14 @@ if (app.Environment.IsDevelopment())
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "PocMsGateway API v1");
         c.RoutePrefix = "swagger";
+
+        c.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None); // inicia recolhido
+        c.DisplayRequestDuration(); // mostra tempo das requisições
+        c.DefaultModelsExpandDepth(-1); // oculta o painel Models
+        c.DocumentTitle = "Ocelot Gateway - Swagger UI";
     });
 }
-
+app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 
@@ -205,6 +210,12 @@ app.MapGet("/swagger/v1/swagger.json", () =>
     });
 
     return Results.Text(jsonString, "application/json", Encoding.UTF8);
+});
+
+app.MapGet("/docs/swagger", context =>
+{
+    context.Response.Redirect("/docs/swagger/index.html");
+    return Task.CompletedTask;
 });
 
 app.Use(async (context, next) =>

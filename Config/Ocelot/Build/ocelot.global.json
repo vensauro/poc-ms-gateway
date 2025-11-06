@@ -3,7 +3,9 @@
     "BaseUrl": "http://localhost:5000",
     "IgnorePaths": [
       "/swagger",
+      "/swagger/index.html",
       "/swagger/v1/swagger.json",
+      "/swagger/{everything}",
       "/docs/asyncapi",
       "/docs/asyncapi/ui",
       "/docs/asyncapi/ui/index.html"
