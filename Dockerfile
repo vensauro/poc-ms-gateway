@@ -1,15 +1,17 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0-alpine AS build
 WORKDIR /App
 
-# Copy everything
 COPY . ./
-# Restore as distinct layers
-RUN dotnet restore
-# Build and publish a release
-RUN dotnet publish -p:AssemblyName=app -o out
 
-# Build runtime image
-FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine
+RUN dotnet restore
+
+RUN dotnet publish -c Release -o /out
+
+RUN ls -la /out
+
+FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine
 WORKDIR /App
-COPY --from=build /App/out .
-ENTRYPOINT ["dotnet", "app.dll"]
+
+COPY --from=build /out ./
+
+ENTRYPOINT ["dotnet", "PocMsGateway.dll"]

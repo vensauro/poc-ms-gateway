@@ -1,4 +1,5 @@
 using MassTransit;
+using Saunter.Attributes;
 using Microsoft.Extensions.Logging;
 using PocMsGateway.DTOs;
 
@@ -21,3 +22,11 @@ public class ResourceConsumer<T> : IConsumer<BaseEvent<T>>
         return Task.CompletedTask;
     }
 }
+
+[Channel("task_queue")]
+[SubscribeOperation(typeof(BaseEvent<TaskCreatedData>), Summary = "Consome criação de tarefa")]
+public class TaskCreatedConsumerDoc { }
+
+[Channel("notification_queue")]
+[SubscribeOperation(typeof(BaseEvent<NotificationData>), Summary = "Consome notificações")]
+public class NotificationConsumerDoc { }

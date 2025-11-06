@@ -3,6 +3,8 @@ using Ocelot.Middleware;
 using MassTransit;
 using PocMsGateway.Messaging;
 using PocMsGateway.DTOs;
+using Saunter;
+using Saunter.AsyncApiSchema.v2;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
@@ -64,6 +66,32 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Configurar Saunter AsyncAPI
+builder.Services.AddAsyncApiSchemaGeneration(options =>
+{
+
+    options.AsyncApi = new AsyncApiDocument
+    {
+        Info = new Info("PocMsGateway", "1.0.0")
+        {
+            Description = "Documentação AsyncAPI do Gateway de Mensageria"
+        },
+        Servers =
+        {
+            ["rabbitmq"] = new Server("amqp://rabbitmq", "amqp")
+            {
+                Description = "Servidor RabbitMQ principal"
+            }
+        }
+    };
+    // Rotas de documentação
+    options.Middleware.Route = "/docs/asyncapi";
+    options.Middleware.UiBaseRoute = "/docs/asyncapi/ui/";
+    options.Middleware.UiTitle = "AsyncAPI - Gateway de Mensageria";
+});
+
+
+// Serviços personalizados
 // builder.Services.AddTransient<IMessagePublisher, MessagePublisher>();
 builder.Services.AddScoped<IMessagePublisher, MessagePublisher>();
 
@@ -75,26 +103,29 @@ app.UseRouting(); // Habilita o roteamento padrão
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "PocMsGateway API v1");
+    });
 }
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
 
-// Garantir que as Controllers sejam carregadas antes do Ocelot
+// Rotas carreagas antes do Ocelot
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
+    endpoints.MapAsyncApiDocuments(); // /docs/asyncapi
+    endpoints.MapAsyncApiUi();        // /docs/asyncapi/ui
 });
 
 // Rota de Health Check manual (caso necessário)
-app.MapGet("/health", () => {
+app.MapGet("/health", () =>
+{
     Console.WriteLine("🚀 Rota /health foi chamada!");
     return Results.Ok(new { Status = true });
 });
-
-// Habilitar Logs de Debug para Ocelot
-app.UseOcelot().Wait();
 
 app.Use(async (context, next) =>
 {
@@ -109,5 +140,13 @@ app.Use(async (context, next) =>
         await context.Response.WriteAsync("Erro interno detectado. Veja logs.");
     }
 });
+
+Console.WriteLine("Assemblies carregados:");
+foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+{
+    Console.WriteLine($"- {asm.FullName}");
+}
+
+await app.UseOcelot();
 
 app.Run();
