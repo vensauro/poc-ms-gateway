@@ -5,6 +5,9 @@ using PocMsGateway.Messaging;
 using PocMsGateway.DTOs;
 using Saunter;
 using Saunter.AsyncApiSchema.v2;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
@@ -106,6 +109,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "PocMsGateway API v1");
+        c.RoutePrefix = "swagger";
     });
 }
 
@@ -120,11 +124,87 @@ app.UseEndpoints(endpoints =>
     endpoints.MapAsyncApiUi();        // /docs/asyncapi/ui
 });
 
-// Rota de Health Check manual (caso necessário)
+// Rota de Health Check manual
 app.MapGet("/health", () =>
 {
     Console.WriteLine("🚀 Rota /health foi chamada!");
     return Results.Ok(new { Status = true });
+});
+
+// Rota de Swagger
+app.MapGet("/swagger/v1/swagger.json", () =>
+{
+    var envName = app.Environment.IsDevelopment() ? "Development" : "Build";
+    var ocelotDir = Path.Combine(Directory.GetCurrentDirectory(), "Config", "Ocelot", envName);
+
+    if (!Directory.Exists(ocelotDir))
+        return Results.Problem($"Diretório não encontrado: {ocelotDir}");
+
+    var routeFiles = Directory.GetFiles(ocelotDir, "ocelot.*.json")
+        .Where(f => !f.Contains("global", StringComparison.OrdinalIgnoreCase))
+        .ToList();
+
+    var allRoutes = new List<JsonObject>();
+
+    foreach (var file in routeFiles)
+    {
+        var json = JsonNode.Parse(File.ReadAllText(file));
+        var routes = json?["Routes"]?.AsArray();
+        if (routes != null)
+        {
+            foreach (var route in routes)
+            {
+                if (route is JsonObject obj)
+                    allRoutes.Add(obj);
+            }
+        }
+    }
+
+    var paths = new JsonObject();
+    foreach (var route in allRoutes)
+    {
+        var upstreamPath = route["UpstreamPathTemplate"]?.ToString();
+        var methods = route["UpstreamHttpMethod"]?.AsArray()?.Select(m => m.ToString().ToLowerInvariant()).ToList()
+                      ?? new List<string> { "get" };
+
+        if (string.IsNullOrEmpty(upstreamPath))
+            continue;
+
+        var pathItem = new JsonObject();
+
+        foreach (var method in methods)
+        {
+            pathItem[method] = new JsonObject
+            {
+                ["summary"] = $"Proxy for {upstreamPath}",
+                ["responses"] = new JsonObject
+                {
+                    ["200"] = new JsonObject { ["description"] = "OK" }
+                }
+            };
+        }
+
+        paths[upstreamPath] = pathItem;
+    }
+
+    var swagger = new JsonObject
+    {
+        ["openapi"] = "3.0.1",
+        ["info"] = new JsonObject
+        {
+            ["title"] = "Ocelot Gateway",
+            ["version"] = "1.0.0",
+            ["description"] = "Swagger dinâmico gerado a partir das rotas do Ocelot"
+        },
+        ["paths"] = paths
+    };
+
+    var jsonString = JsonSerializer.Serialize(swagger, new JsonSerializerOptions
+    {
+        WriteIndented = true
+    });
+
+    return Results.Text(jsonString, "application/json", Encoding.UTF8);
 });
 
 app.Use(async (context, next) =>
