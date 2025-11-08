@@ -49,24 +49,4 @@ public class EventsController : ControllerBase
         await _publisher.PublishEventAsync("task_queue", evt);
         return Ok(new { Message = "Task delete command published!" });
     }
-
-    [HttpPost("notifications")]
-    public async Task<IActionResult> SendNotification([FromBody] NotificationRequest request)
-    {
-        var evt = new BaseEvent<NotificationData>
-        {
-            Type = "notification.send",
-            UserId = request.UserId,
-            Data = new NotificationData
-            {
-                Title = request.Title,
-                Message = request.Message,
-                CreatedAt = request.CreatedAt
-            },
-            OccurredAt = DateTime.UtcNow.ToString("o")
-        };
-
-        await _publisher.PublishEventAsync("notification_queue", evt);
-        return Ok(new { Message = "Notification message publicada!" });
-    }
 }

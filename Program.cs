@@ -33,7 +33,6 @@ builder.Services.AddMassTransit(x =>
     x.AddConsumer<ResourceConsumer<ListTaskData>>();
     x.AddConsumer<ResourceConsumer<TaskGetPayload>>();
     x.AddConsumer<ResourceConsumer<TaskDeletePayload>>();
-    x.AddConsumer<ResourceConsumer<NotificationData>>();
     x.UsingRabbitMq((context, cfg) =>
     {
         cfg.Host("rabbitmq", h =>
@@ -47,10 +46,6 @@ builder.Services.AddMassTransit(x =>
             e.ConfigureConsumer<ResourceConsumer<ListTaskData>>(context);
             e.ConfigureConsumer<ResourceConsumer<TaskGetPayload>>(context);
             e.ConfigureConsumer<ResourceConsumer<TaskDeletePayload>>(context);
-        });
-        cfg.ReceiveEndpoint("notification_queue", e =>
-        {
-            e.ConfigureConsumer<ResourceConsumer<NotificationData>>(context);
         });
     });
 });

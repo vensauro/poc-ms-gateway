@@ -39,7 +39,3 @@ public class TaskCreatedPublisherDoc { }
 [Channel("task_queue")]
 [PublishOperation(typeof(BaseEvent<TaskDeletePayload>), Summary = "Publica exclusão de tarefa")]
 public class TaskDeletedPublisherDoc { }
-
-[Channel("notification_queue")]
-[PublishOperation(typeof(BaseEvent<NotificationData>), Summary = "Publica notificações")]
-public class NotificationPublisherDoc { }

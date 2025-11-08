@@ -27,20 +27,6 @@
                     "Port": "$MESSAGING_PORT"
                 }
             ]
-        },
-        {
-            "UpstreamHttpMethod": [
-                "Post"
-            ],
-            "UpstreamPathTemplate": "/messaging/v1/notifications/send",
-            "DownstreamPathTemplate": "/publish/notifications/send",
-            "DownstreamScheme": "$MESSAGING_SCHEME",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "$MESSAGING_HOST",
-                    "Port": "$MESSAGING_PORT"
-                }
-            ]
         }
     ]
 }
