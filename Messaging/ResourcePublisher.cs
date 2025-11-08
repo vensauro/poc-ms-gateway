@@ -33,9 +33,9 @@ public class MessagePublisher : IMessagePublisher
 }
 
 [Channel("task_queue")]
-[PublishOperation(typeof(BaseEvent<TaskCreatedData>), Summary = "Publica criação de tarefa")]
+[PublishOperation(typeof(BaseEvent<TaskCreatedData>), Summary = "Publica criação da tarefa")]
 public class TaskCreatedPublisherDoc { }
 
 [Channel("task_queue")]
-[PublishOperation(typeof(BaseEvent<TaskDeletePayload>), Summary = "Publica exclusão de tarefa")]
+[PublishOperation(typeof(BaseEvent<TaskDeletePayload>), Summary = "Publica remoção da tarefa")]
 public class TaskDeletedPublisherDoc { }

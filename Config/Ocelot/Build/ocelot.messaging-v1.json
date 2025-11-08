@@ -27,20 +27,6 @@
           "Port": "5000"
         }
       ]
-    },
-    {
-      "UpstreamHttpMethod": [
-        "Post"
-      ],
-      "UpstreamPathTemplate": "/messaging/v1/notifications/send",
-      "DownstreamPathTemplate": "/publish/notifications/send",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5000"
-        }
-      ]
     }
   ]
 }

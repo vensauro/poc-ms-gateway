@@ -30,8 +30,6 @@ builder.WebHost.UseUrls("http://0.0.0.0:5000");
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<ResourceConsumer<TaskCreatedData>>();
-    x.AddConsumer<ResourceConsumer<ListTaskData>>();
-    x.AddConsumer<ResourceConsumer<TaskGetPayload>>();
     x.AddConsumer<ResourceConsumer<TaskDeletePayload>>();
     x.UsingRabbitMq((context, cfg) =>
     {
@@ -43,8 +41,6 @@ builder.Services.AddMassTransit(x =>
         cfg.ReceiveEndpoint("task_queue", e =>
         {
             e.ConfigureConsumer<ResourceConsumer<TaskCreatedData>>(context);
-            e.ConfigureConsumer<ResourceConsumer<ListTaskData>>(context);
-            e.ConfigureConsumer<ResourceConsumer<TaskGetPayload>>(context);
             e.ConfigureConsumer<ResourceConsumer<TaskDeletePayload>>(context);
         });
     });

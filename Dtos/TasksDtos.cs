@@ -4,7 +4,8 @@ namespace PocMsGateway.DTOs
     {
         public string UserId { get; init; } = string.Empty;
         public string Description { get; init; } = string.Empty;
-        public string CreatedAt { get; init; } = string.Empty;
+        public string Category { get; init; } = string.Empty;
+        public string ExpiredAt { get; init; } = string.Empty;
     }
 
     public record BaseEvent<T>
@@ -20,7 +21,8 @@ namespace PocMsGateway.DTOs
     {
         public int? Id { get; init; } = null;
         public string Description { get; init; } = string.Empty;
-        public string CreatedAt { get; init; } = string.Empty;
+        public string Category { get; init; } = string.Empty;
+        public string ExpiredAt { get; init; } = string.Empty;
     }
 
     public record ListTaskRequest
@@ -40,6 +42,7 @@ namespace PocMsGateway.DTOs
     {
         public string UserId { get; set; } = null!;
         public int TaskId { get; set; }
+        public string Category { get; set; } = null!;
     }
 
     public record DeleteTaskRequest

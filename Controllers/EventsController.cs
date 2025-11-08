@@ -23,7 +23,7 @@ public class EventsController : ControllerBase
             Data = new TaskCreatedData
             {
                 Description = request.Description,
-                CreatedAt = request.CreatedAt
+                ExpiredAt = request.ExpiredAt
             },
             OccurredAt = DateTime.UtcNow.ToString("o")
         };
