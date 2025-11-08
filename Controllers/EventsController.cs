@@ -23,7 +23,9 @@ public class EventsController : ControllerBase
             Data = new TaskCreatedData
             {
                 Description = request.Description,
-                ExpiredAt = request.ExpiredAt
+                ExpiredAt = request.ExpiredAt,
+                Category = request.Category,
+                DeviceToken = request.DeviceToken
             },
             OccurredAt = DateTime.UtcNow.ToString("o")
         };
