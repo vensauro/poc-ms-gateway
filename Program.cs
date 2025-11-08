@@ -1,4 +1,6 @@
 using Ocelot.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using Ocelot.Middleware;
 using MassTransit;
 using PocMsGateway.Messaging;
@@ -7,10 +9,11 @@ using Saunter;
 using Saunter.AsyncApiSchema.v2;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IJwtContext, JwtContext>();
 
 // builder.Environment.IsDevelopment()
 string serverHost = builder.Configuration["Server:Host"];
@@ -45,6 +48,27 @@ builder.Services.AddMassTransit(x =>
         });
     });
 });
+
+// Configurar autenticação JWT
+builder.Services
+    .AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        };
+    });
+
+
+builder.Services.AddAuthorization();
 
 // Configurar Ocelot
 builder.Services.AddOcelot();
@@ -108,9 +132,11 @@ if (app.Environment.IsDevelopment())
         c.DocumentTitle = "Ocelot Gateway - Swagger UI";
     });
 }
-app.UseStaticFiles();
+
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
+app.UseStaticFiles();
 
 // Rotas carreagas antes do Ocelot
 app.UseEndpoints(endpoints =>

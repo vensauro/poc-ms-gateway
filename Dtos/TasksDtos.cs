@@ -2,7 +2,6 @@ namespace PocMsGateway.DTOs
 {
     public record TaskRequest
     {
-        public string UserId { get; init; } = string.Empty;
         public string Description { get; init; } = string.Empty;
         public string Category { get; init; } = string.Empty;
         public string ExpiredAt { get; init; } = string.Empty;
@@ -29,7 +28,6 @@ namespace PocMsGateway.DTOs
 
     public record DeleteTaskRequest
     {
-        public string UserId { get; set; } = null!;
         public int TaskId { get; set; }
     }
 

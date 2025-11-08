@@ -11,6 +11,7 @@
   <ItemGroup>
     <PackageReference Include="MassTransit" Version="8.3.6" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.10" />
     <PackageReference Include="Ocelot" Version="23.4.3" />
     <PackageReference Include="Saunter" Version="0.13.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
