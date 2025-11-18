@@ -12,10 +12,7 @@
                     "Host": "$MESSAGING_HOST",
                     "Port": "$MESSAGING_PORT"
                 }
-            ],
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "Bearer"
-            }
+            ]
         },
         {
             "UpstreamHttpMethod": [
@@ -29,10 +26,7 @@
                     "Host": "$MESSAGING_HOST",
                     "Port": "$MESSAGING_PORT"
                 }
-            ],
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "Bearer"
-            }
+            ]
         }
     ]
 }

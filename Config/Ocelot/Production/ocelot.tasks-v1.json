@@ -13,9 +13,9 @@
                     "Port": "$GATEWAY_PORT"
                 }
             ],
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "Bearer"
-            }
+            "DelegatingHandlers": [
+                "ApiScopeHandler"
+            ]
         },
         {
             "UpstreamHttpMethod": [
@@ -30,9 +30,9 @@
                     "Port": "$TASKS_API_PORT"
                 }
             ],
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "Bearer"
-            }
+            "DelegatingHandlers": [
+                "ApiScopeHandler"
+            ]
         },
         {
             "UpstreamHttpMethod": [
@@ -47,9 +47,9 @@
                     "Port": "$TASKS_API_PORT"
                 }
             ],
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "Bearer"
-            }
+            "DelegatingHandlers": [
+                "ApiScopeHandler"
+            ]
         },
         {
             "UpstreamHttpMethod": [
@@ -64,9 +64,9 @@
                     "Port": "$GATEWAY_PORT"
                 }
             ],
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "Bearer"
-            }
+            "DelegatingHandlers": [
+                "ApiScopeHandler"
+            ]
         }
     ]
 }

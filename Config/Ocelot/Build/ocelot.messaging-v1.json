@@ -12,10 +12,7 @@
           "Host": "localhost",
           "Port": "5000"
         }
-      ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer"
-      }
+      ]
     },
     {
       "UpstreamHttpMethod": [
@@ -29,10 +26,7 @@
           "Host": "localhost",
           "Port": "5000"
         }
-      ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer"
-      }
+      ]
     }
   ]
 }

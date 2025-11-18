@@ -1,7 +1,7 @@
 using Ocelot.DependencyInjection;
+using Ocelot.Middleware;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Ocelot.Middleware;
 using MassTransit;
 using PocMsGateway.Messaging;
 using PocMsGateway.DTOs;
@@ -9,27 +9,24 @@ using Saunter;
 using Saunter.AsyncApiSchema.v2;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using ApiGateway.BuildingBlocks.AccessControl.ApiAuth;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IJwtContext, JwtContext>();
 
-// builder.Environment.IsDevelopment()
 string serverHost = builder.Configuration["Server:Host"];
 string rabbitmqHost = builder.Configuration["RabbitMQ:Host"];
 string rabbitmqUser = builder.Configuration["RabbitMQ:Username"];
 string rabbitmqPassword = builder.Configuration["RabbitMQ:Password"];
 
-// Configurar Host antes de qualquer outra configuração
-// builder.WebHost.UseUrls(serverHost);
-
 Console.WriteLine(rabbitmqHost);
 Console.WriteLine(serverHost);
 
-builder.WebHost.UseUrls("http://0.0.0.0:5000");
+builder.WebHost.UseUrls(serverHost);
 
-// Configurar MassTransit com RabbitMQ e consumidor
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<ResourceConsumer<TaskCreatedData>>();
@@ -49,29 +46,38 @@ builder.Services.AddMassTransit(x =>
     });
 });
 
-// Configurar autenticação JWT
+builder.Services.Configure<ApiKeySettings>(
+    builder.Configuration.GetSection("ApiKeySettings")
+);
+
+builder.Services.AddTransient<ApiScopeHandler>();
+
 builder.Services
-    .AddAuthentication("Bearer")
-    .AddJwtBearer("Bearer", options =>
+    .AddAuthentication(options =>
     {
+        options.DefaultAuthenticateScheme = ApiAuthAuthenticationOptions.DefaultScheme;
+        options.DefaultChallengeScheme = ApiAuthAuthenticationOptions.DefaultScheme;
+    })
+    .AddApiAuthSupport()
+    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+    {
+        options.RequireHttpsMetadata = false;
+        options.SaveToken = true;
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = false,
+            ValidateIssuerSigningKey = false,
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? "placeholder"))
         };
     });
 
-
 builder.Services.AddAuthorization();
 
-// Configurar Ocelot
-builder.Services.AddOcelot();
 builder.Configuration.AddOcelot(
     builder.Environment.IsDevelopment()
         ? Path.GetFullPath(@"Config/Ocelot/Development")
@@ -79,15 +85,18 @@ builder.Configuration.AddOcelot(
     builder.Environment
 );
 
-// Configurar Controllers e Swagger
+builder.Services
+    .AddOcelot(builder.Configuration)
+    .AddDelegatingHandler<ApiScopeHandler>(true);
+
+// Controllers + Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configurar Saunter AsyncAPI
+// AsyncAPI
 builder.Services.AddAsyncApiSchemaGeneration(options =>
 {
-
     options.AsyncApi = new AsyncApiDocument
     {
         Info = new Info("PocMsGateway", "1.0.0")
@@ -107,7 +116,6 @@ builder.Services.AddAsyncApiSchemaGeneration(options =>
     options.Middleware.UiBaseRoute = "/docs/asyncapi/ui/";
     options.Middleware.UiTitle = "AsyncAPI - Gateway de Mensageria";
 });
-
 
 // Serviços personalizados
 // builder.Services.AddTransient<IMessagePublisher, MessagePublisher>();
@@ -221,20 +229,21 @@ app.MapGet("/swagger/v1/swagger.json", () =>
         ["paths"] = paths
     };
 
-    var jsonString = JsonSerializer.Serialize(swagger, new JsonSerializerOptions
-    {
-        WriteIndented = true
-    });
-
-    return Results.Text(jsonString, "application/json", Encoding.UTF8);
+    return Results.Text(
+        JsonSerializer.Serialize(swagger, new JsonSerializerOptions { WriteIndented = true }),
+        "application/json",
+        Encoding.UTF8
+    );
 });
 
-app.MapGet("/docs/swagger", context =>
+// Redirect for docs
+app.MapGet("/docs/swagger", ctx =>
 {
-    context.Response.Redirect("/docs/swagger/index.html");
+    ctx.Response.Redirect("/docs/swagger/index.html");
     return Task.CompletedTask;
 });
 
+// Global error catcher
 app.Use(async (context, next) =>
 {
     try
@@ -249,11 +258,11 @@ app.Use(async (context, next) =>
     }
 });
 
-Console.WriteLine("Assemblies carregados:");
-foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
-{
-    Console.WriteLine($"- {asm.FullName}");
-}
+// Console.WriteLine("Assemblies carregados:");
+// foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+// {
+//     Console.WriteLine($"- {asm.FullName}");
+// }
 
 await app.UseOcelot();
 
