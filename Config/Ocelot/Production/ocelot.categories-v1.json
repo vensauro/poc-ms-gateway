@@ -1,0 +1,72 @@
+{
+    "Routes": [
+        {
+            "UpstreamHttpMethod": [
+                "Post"
+            ],
+            "UpstreamPathTemplate": "/categories/v1/create",
+            "DownstreamPathTemplate": "/messaging/v1/categories/create",
+            "DownstreamScheme": "$GATEWAY_SCHEME",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "$GATEWAY_HOST",
+                    "Port": "$GATEWAY_PORT"
+                }
+            ],
+            "DelegatingHandlers": [
+                "ApiScopeHandler"
+            ]
+        },
+        {
+            "UpstreamHttpMethod": [
+                "Get"
+            ],
+            "UpstreamPathTemplate": "/categories/v1/list",
+            "DownstreamPathTemplate": "/categories/v1/",
+            "DownstreamScheme": "$TASKS_API_SCHEME",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "$TASKS_API_HOST",
+                    "Port": "$TASKS_API_PORT"
+                }
+            ],
+            "DelegatingHandlers": [
+                "ApiScopeHandler"
+            ]
+        },
+        {
+            "UpstreamHttpMethod": [
+                "Get"
+            ],
+            "UpstreamPathTemplate": "/categories/v1/get/{id}",
+            "DownstreamPathTemplate": "/categories/v1/{id}",
+            "DownstreamScheme": "$TASKS_API_SCHEME",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "$TASKS_API_HOST",
+                    "Port": "$TASKS_API_PORT"
+                }
+            ],
+            "DelegatingHandlers": [
+                "ApiScopeHandler"
+            ]
+        },
+        {
+            "UpstreamHttpMethod": [
+                "Delete"
+            ],
+            "UpstreamPathTemplate": "/categories/v1/delete",
+            "DownstreamPathTemplate": "/messaging/v1/categories/delete",
+            "DownstreamScheme": "$GATEWAY_SCHEME",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "$GATEWAY_HOST",
+                    "Port": "$GATEWAY_PORT"
+                }
+            ],
+            "DelegatingHandlers": [
+                "ApiScopeHandler"
+            ]
+        }
+    ]
+}

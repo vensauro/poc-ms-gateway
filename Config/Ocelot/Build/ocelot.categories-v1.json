@@ -1,0 +1,72 @@
+{
+  "Routes": [
+    {
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "UpstreamPathTemplate": "/categories/v1/create",
+      "DownstreamPathTemplate": "/messaging/v1/categories/create",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "DelegatingHandlers": [
+        "ApiScopeHandler"
+      ]
+    },
+    {
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "UpstreamPathTemplate": "/categories/v1/list",
+      "DownstreamPathTemplate": "/categories/v1/",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "ms-node",
+          "Port": "3000"
+        }
+      ],
+      "DelegatingHandlers": [
+        "ApiScopeHandler"
+      ]
+    },
+    {
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "UpstreamPathTemplate": "/categories/v1/get/{id}",
+      "DownstreamPathTemplate": "/categories/v1/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "ms-node",
+          "Port": "3000"
+        }
+      ],
+      "DelegatingHandlers": [
+        "ApiScopeHandler"
+      ]
+    },
+    {
+      "UpstreamHttpMethod": [
+        "Delete"
+      ],
+      "UpstreamPathTemplate": "/categories/v1/delete",
+      "DownstreamPathTemplate": "/messaging/v1/categories/delete",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "DelegatingHandlers": [
+        "ApiScopeHandler"
+      ]
+    }
+  ]
+}

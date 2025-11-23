@@ -21,16 +21,18 @@ public class EventsController : ControllerBase
     public async Task<IActionResult> CreateTask([FromBody] TaskRequest request)
     {
         var userId = _jwt.UserId;
+        var deviceToken = _jwt.DeviceToken;
 
         var evt = new BaseEvent<TaskCreatedData>
         {
             Type = "task.create",
-            UserId = userId ?? string.Empty,
             Data = new TaskCreatedData
             {
                 Description = request.Description,
                 ExpiredAt = request.ExpiredAt,
-                Category = request.Category
+                CategoryId = request.CategoryId,
+                UserId = userId ?? string.Empty,
+                DeviceToken = deviceToken ?? string.Empty,
             },
             OccurredAt = DateTime.UtcNow.ToString("o")
         };
@@ -45,18 +47,60 @@ public class EventsController : ControllerBase
     {
         var userId = _jwt.UserId;
 
-        var evt = new BaseEvent<TaskDeletePayload>
+        var evt = new BaseEvent<TaskDeleteData>
         {
             Type = "task.delete",
-            UserId = userId ?? string.Empty,
-            Data = new TaskDeletePayload
+            Data = new TaskDeleteData
             {
-                TaskId = request.TaskId
+                TaskId = request.TaskId,
+                UserId = userId ?? string.Empty,
             },
             OccurredAt = DateTime.UtcNow.ToString("o")
         };
 
         await _publisher.PublishEventAsync("task_queue", evt);
         return Ok(new { Message = "Task delete command published!" });
+    }
+
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    [HttpPost("categories/create")]
+    public async Task<IActionResult> CreateCategory([FromBody] CategoryRequest request)
+    {
+        var userId = _jwt.UserId;
+
+        var evt = new BaseEvent<CategoryCreatedData>
+        {
+            Type = "categories.create",
+            Data = new CategoryCreatedData
+            {
+                Name = request.Name,
+                UserId = userId ?? string.Empty,
+            },
+            OccurredAt = DateTime.UtcNow.ToString("o")
+        };
+
+        await _publisher.PublishEventAsync("category_queue", evt);
+        return Ok(new { Message = "Categoria enviada para fila!" });
+    }
+
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    [HttpPost("categories/delete")]
+    public async Task<IActionResult> DeleteCategory([FromBody] DeleteCategoryRequest request)
+    {
+        var userId = _jwt.UserId;
+
+        var evt = new BaseEvent<CategoryDeleteData>
+        {
+            Type = "categories.delete",
+            Data = new CategoryDeleteData
+            {
+                CategoryId = request.CategoryId,
+                UserId = userId ?? string.Empty,
+            },
+            OccurredAt = DateTime.UtcNow.ToString("o")
+        };
+
+        await _publisher.PublishEventAsync("category_queue", evt);
+        return Ok(new { Message = "Category delete command published!" });
     }
 }

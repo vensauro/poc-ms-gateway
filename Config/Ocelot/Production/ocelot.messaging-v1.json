@@ -4,6 +4,34 @@
             "UpstreamHttpMethod": [
                 "Post"
             ],
+            "UpstreamPathTemplate": "/messaging/v1/categories/create",
+            "DownstreamPathTemplate": "/publish/categories/create",
+            "DownstreamScheme": "$MESSAGING_SCHEME",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "$MESSAGING_HOST",
+                    "Port": "$MESSAGING_PORT"
+                }
+            ]
+        },
+        {
+            "UpstreamHttpMethod": [
+                "Post"
+            ],
+            "UpstreamPathTemplate": "/messaging/v1/categories/delete",
+            "DownstreamPathTemplate": "/publish/categories/delete",
+            "DownstreamScheme": "$MESSAGING_SCHEME",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "$MESSAGING_HOST",
+                    "Port": "$MESSAGING_PORT"
+                }
+            ]
+        },
+        {
+            "UpstreamHttpMethod": [
+                "Post"
+            ],
             "UpstreamPathTemplate": "/messaging/v1/tasks/create",
             "DownstreamPathTemplate": "/publish/tasks/create",
             "DownstreamScheme": "$MESSAGING_SCHEME",
