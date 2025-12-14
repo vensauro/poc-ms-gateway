@@ -13,9 +13,9 @@
           "Port": "5000"
         }
       ],
-      "DelegatingHandlers": [
-        "ApiScopeHandler"
-      ]
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "API Auth"
+      }
     },
     {
       "UpstreamHttpMethod": [
@@ -30,9 +30,9 @@
           "Port": "3000"
         }
       ],
-      "DelegatingHandlers": [
-        "ApiScopeHandler"
-      ]
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "API Auth"
+      }
     },
     {
       "UpstreamHttpMethod": [
@@ -47,9 +47,9 @@
           "Port": "3000"
         }
       ],
-      "DelegatingHandlers": [
-        "ApiScopeHandler"
-      ]
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "API Auth"
+      }
     },
     {
       "UpstreamHttpMethod": [
@@ -64,9 +64,9 @@
           "Port": "5000"
         }
       ],
-      "DelegatingHandlers": [
-        "ApiScopeHandler"
-      ]
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "API Auth"
+      }
     }
   ]
 }

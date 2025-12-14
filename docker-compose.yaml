@@ -38,13 +38,9 @@ services:
       - RabbitMQ__Username=${RabbitMQ__Username}
       - RabbitMQ__Password=${RabbitMQ__Password}
       - Server__Host=${Server__Host}
-      - Jwt__Key=${Jwt__Key}
+      - Jwt__Secret=${Jwt__Secret}
       - Jwt__Issuer=${Jwt__Issuer}
       - Jwt__Audience=${Jwt__Audience}
-      - ApiKeySettings__Keys__0__Key=${ApiKeySettings__Keys__0__Key}
-      - ApiKeySettings__Keys__0__Scopes__0=${ApiKeySettings__Keys__0__Scopes__0}
-      - ApiKeySettings__Keys__0__Scopes__1=${ApiKeySettings__Keys__0__Scopes__1}
-      - ApiKeySettings__Keys__0__Scopes__2=${ApiKeySettings__Keys__0__Scopes__2}
 
 volumes:
   rabbitmq_data:

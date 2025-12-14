@@ -10,18 +10,19 @@ public class EventsController : ControllerBase
     private readonly IMessagePublisher _publisher;
     private readonly IJwtContext _jwt;
 
-    public EventsController(IMessagePublisher publisher, IJwtContext jwt)
+    public EventsController(IMessagePublisher publisher)
     {
         _publisher = publisher;
-        _jwt = jwt;
     }
 
     [Authorize(AuthenticationSchemes = "Bearer")]
     [HttpPost("tasks/create")]
     public async Task<IActionResult> CreateTask([FromBody] TaskRequest request)
     {
-        var userId = _jwt.UserId;
-        var deviceToken = _jwt.DeviceToken;
+        var userId = User.FindFirst("user_id")?.Value;
+        var deviceToken = User.FindFirst("device_token")?.Value;
+
+        Console.WriteLine($"Categoria criada pelo usuário: {userId}");
 
         var evt = new BaseEvent<TaskCreatedData>
         {
@@ -45,7 +46,9 @@ public class EventsController : ControllerBase
     [HttpPost("tasks/delete")]
     public async Task<IActionResult> DeleteTask([FromBody] DeleteTaskRequest request)
     {
-        var userId = _jwt.UserId;
+        var userId = User.FindFirst("user_id")?.Value;
+
+        Console.WriteLine($"Categoria criada pelo usuário: {userId}");
 
         var evt = new BaseEvent<TaskDeleteData>
         {
@@ -66,11 +69,13 @@ public class EventsController : ControllerBase
     [HttpPost("categories/create")]
     public async Task<IActionResult> CreateCategory([FromBody] CategoryRequest request)
     {
-        var userId = _jwt.UserId;
+        var userId = User.FindFirst("user_id")?.Value;
+
+        Console.WriteLine("Categoria criada pelo usuário: {0}", userId);
 
         var evt = new BaseEvent<CategoryCreatedData>
         {
-            Type = "categories.create",
+            Type = "category.create",
             Data = new CategoryCreatedData
             {
                 Name = request.Name,
@@ -87,11 +92,13 @@ public class EventsController : ControllerBase
     [HttpPost("categories/delete")]
     public async Task<IActionResult> DeleteCategory([FromBody] DeleteCategoryRequest request)
     {
-        var userId = _jwt.UserId;
+        var userId = User.FindFirst("user_id")?.Value;
+
+        Console.WriteLine($"Categoria criada pelo usuário: {userId}");
 
         var evt = new BaseEvent<CategoryDeleteData>
         {
-            Type = "categories.delete",
+            Type = "category.delete",
             Data = new CategoryDeleteData
             {
                 CategoryId = request.CategoryId,

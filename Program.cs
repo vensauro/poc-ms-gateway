@@ -29,8 +29,6 @@ builder.WebHost.UseUrls(serverHost);
 
 builder.Services.AddMassTransit(x =>
 {
-    x.AddConsumer<ResourceConsumer<TaskCreatedData>>();
-    x.AddConsumer<ResourceConsumer<TaskDeleteData>>();
     x.UsingRabbitMq((context, cfg) =>
     {
         cfg.Host("rabbitmq", h =>
@@ -38,16 +36,16 @@ builder.Services.AddMassTransit(x =>
             h.Username(rabbitmqUser);
             h.Password(rabbitmqPassword);
         });
-        cfg.ReceiveEndpoint("task_queue", e =>
-        {
-            e.ConfigureConsumer<ResourceConsumer<TaskCreatedData>>(context);
-            e.ConfigureConsumer<ResourceConsumer<TaskDeleteData>>(context);
-        });
+        cfg.ReceiveEndpoint("gateway_queue", e =>
+        {});
     });
 });
 
 builder.Services.Configure<ApiKeySettings>(
     builder.Configuration.GetSection("ApiKeySettings")
+);
+builder.Services.Configure<ApiAuthAuthenticationOptions>(
+    builder.Configuration.GetSection("Jwt")
 );
 
 builder.Services.AddTransient<ApiScopeHandler>();
@@ -58,7 +56,7 @@ builder.Services
         options.DefaultAuthenticateScheme = ApiAuthAuthenticationOptions.DefaultScheme;
         options.DefaultChallengeScheme = ApiAuthAuthenticationOptions.DefaultScheme;
     })
-    .AddApiAuthSupport()
+    .AddApiAuthSupport(builder.Configuration)
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
     {
         options.RequireHttpsMetadata = false;
@@ -68,11 +66,11 @@ builder.Services
             ValidateIssuer = false,
             ValidateAudience = false,
             ValidateLifetime = false,
-            ValidateIssuerSigningKey = false,
+            ValidateIssuerSigningKey = true,
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? "placeholder"))
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"] ?? "placeholder"))
         };
     });
 
@@ -85,9 +83,19 @@ builder.Configuration.AddOcelot(
     builder.Environment
 );
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFlutter", policy =>
+    {
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 builder.Services
-    .AddOcelot(builder.Configuration)
-    .AddDelegatingHandler<ApiScopeHandler>(true);
+    .AddOcelot(builder.Configuration);
 
 // Controllers + Swagger
 builder.Services.AddControllers();
@@ -124,6 +132,8 @@ builder.Services.AddScoped<IMessagePublisher, MessagePublisher>();
 var app = builder.Build();
 
 app.UseRouting(); // Habilita o roteamento padrão
+
+app.UseCors("AllowFlutter");
 
 // Configurar Middleware e Rotas
 if (app.Environment.IsDevelopment())

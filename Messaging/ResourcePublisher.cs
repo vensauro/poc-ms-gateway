@@ -1,7 +1,7 @@
 using MassTransit;
 using Saunter.Attributes;
 using PocMsGateway.DTOs;
-using Microsoft.Extensions.Logging;
+using System.Net.Mime;
 
 namespace PocMsGateway.Messaging;
 
@@ -12,23 +12,27 @@ public interface IMessagePublisher
 
 public class MessagePublisher : IMessagePublisher
 {
-    private readonly IPublishEndpoint _publishEndpoint;
+    private readonly IBus _bus;
     private readonly ILogger<MessagePublisher> _logger;
 
-    public MessagePublisher(IPublishEndpoint publishEndpoint, ILogger<MessagePublisher> logger)
+    public MessagePublisher(IBus bus, ILogger<MessagePublisher> logger)
     {
-        _publishEndpoint = publishEndpoint;
+        _bus = bus;
         _logger = logger;
     }
 
     public async Task PublishEventAsync<T>(string queueName, BaseEvent<T> evt)
     {
-        _logger.LogInformation(
-            "🚀 Publicando evento na fila '{QueueName}': Type={Type}, CorrelationId={CorrelationId}", 
-            queueName, evt.Type, evt.CorrelationId
-        );
-        await _publishEndpoint.Publish(evt);
-        _logger.LogInformation("✅ Evento publicado com sucesso!");
+        _logger.LogInformation("🚀 Publicando evento direto na fila {QueueName}", queueName);
+
+        var sendEndpoint = await _bus.GetSendEndpoint(new Uri($"queue:{queueName}"));
+
+        await sendEndpoint.Send(evt, ctx =>
+        {
+            ctx.ContentType = new ContentType("application/json");
+        });
+
+        _logger.LogInformation("✅ Evento publicado na fila {QueueName}", queueName);
     }
 }
 
