@@ -4,7 +4,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using MassTransit;
 using PocMsGateway.Messaging;
-using PocMsGateway.DTOs;
 using Saunter;
 using Saunter.AsyncApiSchema.v2;
 using System.Text.Json;
@@ -48,7 +47,7 @@ builder.Services.Configure<ApiAuthAuthenticationOptions>(
     builder.Configuration.GetSection("Jwt")
 );
 
-builder.Services.AddTransient<ApiScopeHandler>();
+// builder.Services.AddTransient<ApiScopeHandler>();
 
 builder.Services
     .AddAuthentication(options =>

@@ -55,8 +55,8 @@
             "UpstreamHttpMethod": [
                 "Delete"
             ],
-            "UpstreamPathTemplate": "/tasks/v1/delete",
-            "DownstreamPathTemplate": "/messaging/v1/tasks/delete",
+            "UpstreamPathTemplate": "/tasks/v1/delete/{id}",
+            "DownstreamPathTemplate": "/messaging/v1/tasks/delete?id={id}",
             "DownstreamScheme": "$GATEWAY_SCHEME",
             "DownstreamHostAndPorts": [
                 {
@@ -64,6 +64,7 @@
                     "Port": "$GATEWAY_PORT"
                 }
             ],
+            "DelegatingHandlers": [ "DeleteTaskHandler" ],
             "AuthenticationOptions": {
                 "AuthenticationProviderKey": "API Auth"
             }

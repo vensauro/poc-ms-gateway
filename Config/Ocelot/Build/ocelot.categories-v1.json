@@ -55,14 +55,17 @@
       "UpstreamHttpMethod": [
         "Delete"
       ],
-      "UpstreamPathTemplate": "/categories/v1/delete",
-      "DownstreamPathTemplate": "/messaging/v1/categories/delete",
+      "UpstreamPathTemplate": "/categories/v1/delete/{id}",
+      "DownstreamPathTemplate": "/messaging/v1/categories/delete?id={id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
           "Port": "5000"
         }
+      ],
+      "DelegatingHandlers": [
+        "DeleteCategoryHandler"
       ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "API Auth"

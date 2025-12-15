@@ -55,14 +55,17 @@
       "UpstreamHttpMethod": [
         "Delete"
       ],
-      "UpstreamPathTemplate": "/tasks/v1/delete",
-      "DownstreamPathTemplate": "/messaging/v1/tasks/delete",
+      "UpstreamPathTemplate": "/tasks/v1/delete/{id}",
+      "DownstreamPathTemplate": "/messaging/v1/tasks/delete?id={id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
           "Port": "5000"
         }
+      ],
+      "DelegatingHandlers": [
+        "DeleteTaskHandler"
       ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "API Auth"
