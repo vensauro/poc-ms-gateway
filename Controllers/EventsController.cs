@@ -41,7 +41,7 @@ public class EventsController : ControllerBase
     }
 
     [Authorize(AuthenticationSchemes = "Bearer")]
-    [HttpDelete("tasks/update/{taskId:int}")]
+    [HttpPut("tasks/update/{taskId:int}")]
     public async Task<IActionResult> UpdateTask(
         [FromRoute] int taskId,
         [FromBody] UpdateTaskRequest request
@@ -112,7 +112,7 @@ public class EventsController : ControllerBase
     }
 
     [Authorize(AuthenticationSchemes = "Bearer")]
-    [HttpDelete("categories/update/{categoryId:int}")]
+    [HttpPut("categories/update/{categoryId:int}")]
     public async Task<IActionResult> UpdateCategory(
         [FromRoute] int categoryId,
         [FromBody] UpdateCategoryRequest request

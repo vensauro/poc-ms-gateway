@@ -19,20 +19,19 @@ namespace PocMsGateway.DTOs
 
     public record UpdateTaskRequest
     {
-        public int TaskId { get; set; }
-        public string Description { get; init; } = string.Empty;
-        public int CategoryId { get; set; }
-        public string ExpiredAt { get; init; } = string.Empty;
+        public string? Description { get; init; }
+        public int? CategoryId { get; init; }
+        public string? ExpiredAt { get; init; }
     }
 
     public record TaskUpdateData
     {
-        public int TaskId { get; set; }
-        public string Description { get; init; } = string.Empty;
-        public int CategoryId { get; set; }
-        public string ExpiredAt { get; init; } = string.Empty;
-        public string DeviceToken { get; init; } = string.Empty;
+        public int TaskId { get; init; }
+        public string? Description { get; init; }
+        public int? CategoryId { get; init; }
+        public string? ExpiredAt { get; init; }
         public string UserId { get; init; } = string.Empty;
+        public string DeviceToken { get; init; } = string.Empty;
     }
 
     public record DeleteTaskRequest

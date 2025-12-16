@@ -14,14 +14,13 @@ namespace PocMsGateway.DTOs
 
     public record UpdateCategoryRequest
     {
-        public int CategoryId { get; set; }
-        public string Name { get; init; } = string.Empty;
+        public string? Name { get; init; }
     }
 
     public record CategoryUpdateData
     {
-        public int CategoryId { get; set; }
-        public string Name { get; init; } = string.Empty;
+        public int CategoryId { get; init; }
+        public string? Name { get; init; }
         public string UserId { get; init; } = string.Empty;
     }
 
