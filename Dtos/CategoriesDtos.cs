@@ -5,10 +5,22 @@ namespace PocMsGateway.DTOs
         public string Name { get; init; } = string.Empty;
     }
 
-
     public record CategoryCreatedData
     {
         public int? Id { get; init; } = null;
+        public string Name { get; init; } = string.Empty;
+        public string UserId { get; init; } = string.Empty;
+    }
+
+    public record UpdateCategoryRequest
+    {
+        public int CategoryId { get; set; }
+        public string Name { get; init; } = string.Empty;
+    }
+
+    public record CategoryUpdateData
+    {
+        public int CategoryId { get; set; }
         public string Name { get; init; } = string.Empty;
         public string UserId { get; init; } = string.Empty;
     }

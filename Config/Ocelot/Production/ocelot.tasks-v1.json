@@ -53,6 +53,23 @@
         },
         {
             "UpstreamHttpMethod": [
+                "Put"
+            ],
+            "UpstreamPathTemplate": "/tasks/v1/update/{id}",
+            "DownstreamPathTemplate": "/messaging/v1/tasks/update/{id}",
+            "DownstreamScheme": "$GATEWAY_SCHEME",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "$GATEWAY_HOST",
+                    "Port": "$GATEWAY_PORT"
+                }
+            ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "API Auth"
+            }
+        },
+        {
+            "UpstreamHttpMethod": [
                 "Delete"
             ],
             "UpstreamPathTemplate": "/tasks/v1/delete/{id}",

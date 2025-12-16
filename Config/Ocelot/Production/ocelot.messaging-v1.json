@@ -19,6 +19,23 @@
         },
         {
             "UpstreamHttpMethod": [
+                "Put"
+            ],
+            "UpstreamPathTemplate": "/messaging/v1/categories/update/{id}",
+            "DownstreamPathTemplate": "/publish/categories/update/{id}",
+            "DownstreamScheme": "$MESSAGING_SCHEME",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "$MESSAGING_HOST",
+                    "Port": "$MESSAGING_PORT"
+                }
+            ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "API Auth"
+            }
+        },
+        {
+            "UpstreamHttpMethod": [
                 "Delete"
             ],
             "UpstreamPathTemplate": "/messaging/v1/categories/delete/{id}",
@@ -40,6 +57,23 @@
             ],
             "UpstreamPathTemplate": "/messaging/v1/tasks/create",
             "DownstreamPathTemplate": "/publish/tasks/create",
+            "DownstreamScheme": "$MESSAGING_SCHEME",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "$MESSAGING_HOST",
+                    "Port": "$MESSAGING_PORT"
+                }
+            ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "API Auth"
+            }
+        },
+        {
+            "UpstreamHttpMethod": [
+                "Put"
+            ],
+            "UpstreamPathTemplate": "/messaging/v1/tasks/update/{id}",
+            "DownstreamPathTemplate": "/publish/tasks/update/{id}",
             "DownstreamScheme": "$MESSAGING_SCHEME",
             "DownstreamHostAndPorts": [
                 {

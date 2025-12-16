@@ -53,6 +53,23 @@
         },
         {
             "UpstreamHttpMethod": [
+                "Put"
+            ],
+            "UpstreamPathTemplate": "/categories/v1/update/{id}",
+            "DownstreamPathTemplate": "/messaging/v1/categories/update/{id}",
+            "DownstreamScheme": "$GATEWAY_SCHEME",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "$GATEWAY_HOST",
+                    "Port": "$GATEWAY_PORT"
+                }
+            ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "API Auth"
+            }
+        },
+        {
+            "UpstreamHttpMethod": [
                 "Delete"
             ],
             "UpstreamPathTemplate": "/categories/v1/delete/{id}",
