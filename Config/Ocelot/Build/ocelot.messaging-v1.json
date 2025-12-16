@@ -19,10 +19,10 @@
     },
     {
       "UpstreamHttpMethod": [
-        "Post"
+        "Delete"
       ],
-      "UpstreamPathTemplate": "/messaging/v1/categories/delete",
-      "DownstreamPathTemplate": "/publish/categories/delete",
+      "UpstreamPathTemplate": "/messaging/v1/categories/delete/{id}",
+      "DownstreamPathTemplate": "/publish/categories/delete/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -53,10 +53,10 @@
     },
     {
       "UpstreamHttpMethod": [
-        "Post"
+        "Delete"
       ],
-      "UpstreamPathTemplate": "/messaging/v1/tasks/delete",
-      "DownstreamPathTemplate": "/publish/tasks/delete",
+      "UpstreamPathTemplate": "/messaging/v1/tasks/delete/{id}",
+      "DownstreamPathTemplate": "/publish/tasks/delete/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {

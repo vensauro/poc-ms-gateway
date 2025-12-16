@@ -22,8 +22,6 @@ public class EventsController : ControllerBase
         var userId = User.FindFirst("user_id")?.Value;
         var deviceToken = User.FindFirst("device_token")?.Value;
 
-        Console.WriteLine($"Categoria criada pelo usuário: {userId}");
-
         var evt = new BaseEvent<TaskCreatedData>
         {
             Type = "task.create",
@@ -43,19 +41,17 @@ public class EventsController : ControllerBase
     }
 
     [Authorize(AuthenticationSchemes = "Bearer")]
-    [HttpPost("tasks/delete")]
-    public async Task<IActionResult> DeleteTask([FromBody] DeleteTaskRequest request)
+    [HttpDelete("tasks/delete/{taskId:int}")]
+    public async Task<IActionResult> DeleteTask([FromRoute] int taskId)
     {
         var userId = User.FindFirst("user_id")?.Value;
-
-        Console.WriteLine($"Categoria criada pelo usuário: {userId}");
 
         var evt = new BaseEvent<TaskDeleteData>
         {
             Type = "task.delete",
             Data = new TaskDeleteData
             {
-                TaskId = request.TaskId,
+                TaskId = taskId,
                 UserId = userId ?? string.Empty,
             },
             OccurredAt = DateTime.UtcNow.ToString("o")
@@ -70,8 +66,6 @@ public class EventsController : ControllerBase
     public async Task<IActionResult> CreateCategory([FromBody] CategoryRequest request)
     {
         var userId = User.FindFirst("user_id")?.Value;
-
-        Console.WriteLine("Categoria criada pelo usuário: {0}", userId);
 
         var evt = new BaseEvent<CategoryCreatedData>
         {
@@ -89,19 +83,17 @@ public class EventsController : ControllerBase
     }
 
     [Authorize(AuthenticationSchemes = "Bearer")]
-    [HttpPost("categories/delete")]
-    public async Task<IActionResult> DeleteCategory([FromBody] DeleteCategoryRequest request)
+    [HttpDelete("categories/delete/{categoryId:int}")]
+    public async Task<IActionResult> DeleteCategory([FromRoute] int categoryId)
     {
         var userId = User.FindFirst("user_id")?.Value;
-
-        Console.WriteLine($"Categoria criada pelo usuário: {userId}");
 
         var evt = new BaseEvent<CategoryDeleteData>
         {
             Type = "category.delete",
             Data = new CategoryDeleteData
             {
-                CategoryId = request.CategoryId,
+                CategoryId = categoryId,
                 UserId = userId ?? string.Empty,
             },
             OccurredAt = DateTime.UtcNow.ToString("o")

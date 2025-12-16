@@ -47,8 +47,6 @@ builder.Services.Configure<ApiAuthAuthenticationOptions>(
     builder.Configuration.GetSection("Jwt")
 );
 
-// builder.Services.AddTransient<ApiScopeHandler>();
-
 builder.Services
     .AddAuthentication(options =>
     {
