@@ -265,12 +265,6 @@ app.Use(async (context, next) =>
     }
 });
 
-// Console.WriteLine("Assemblies carregados:");
-// foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
-// {
-//     Console.WriteLine($"- {asm.FullName}");
-// }
-
 await app.UseOcelot();
 
 app.Run();

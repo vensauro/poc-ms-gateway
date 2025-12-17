@@ -5,15 +5,9 @@ using Microsoft.AspNetCore.Authorization;
 
 [Route("publish")]
 [ApiController]
-public class EventsController : ControllerBase
+public class EventsController(IMessagePublisher publisher) : ControllerBase
 {
-    private readonly IMessagePublisher _publisher;
-    private readonly IJwtContext _jwt;
-
-    public EventsController(IMessagePublisher publisher)
-    {
-        _publisher = publisher;
-    }
+    private readonly IMessagePublisher _publisher = publisher;
 
     [Authorize(AuthenticationSchemes = "Bearer")]
     [HttpPost("tasks/create")]
