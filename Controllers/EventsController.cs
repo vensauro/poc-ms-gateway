@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using PocMsGateway.Messaging;
-using PocMsGateway.DTOs;
+using DontForgetGateway.Messaging;
+using DontForgetGateway.DTOs;
 using Microsoft.AspNetCore.Authorization;
 
 [Route("publish")]

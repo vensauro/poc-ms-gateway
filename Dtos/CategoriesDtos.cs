@@ -1,4 +1,4 @@
-namespace PocMsGateway.DTOs
+namespace DontForgetGateway.DTOs
 {
     public record CategoryRequest
     {

@@ -1,9 +1,9 @@
 using MassTransit;
 using Saunter.Attributes;
 using Microsoft.Extensions.Logging;
-using PocMsGateway.DTOs;
+using DontForgetGateway.DTOs;
 
-namespace PocMsGateway.Messaging;
+namespace DontForgetGateway.Messaging;
 
 public class ResourceConsumer<T> : IConsumer<BaseEvent<T>>
 {

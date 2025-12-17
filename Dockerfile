@@ -14,4 +14,4 @@ WORKDIR /App
 
 COPY --from=build /out ./
 
-ENTRYPOINT ["dotnet", "PocMsGateway.dll"]
+ENTRYPOINT ["dotnet", "DontForgetGateway.dll"]

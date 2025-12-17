@@ -1,9 +1,9 @@
 using MassTransit;
 using Saunter.Attributes;
-using PocMsGateway.DTOs;
+using DontForgetGateway.DTOs;
 using System.Net.Mime;
 
-namespace PocMsGateway.Messaging;
+namespace DontForgetGateway.Messaging;
 
 public interface IMessagePublisher
 {

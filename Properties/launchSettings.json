@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "PocMsGateway": {
+    "DontForgetGateway": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

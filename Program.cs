@@ -3,7 +3,7 @@ using Ocelot.Middleware;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using MassTransit;
-using PocMsGateway.Messaging;
+using DontForgetGateway.Messaging;
 using Saunter;
 using Saunter.AsyncApiSchema.v2;
 using System.Text.Json;
@@ -104,7 +104,7 @@ builder.Services.AddAsyncApiSchemaGeneration(options =>
 {
     options.AsyncApi = new AsyncApiDocument
     {
-        Info = new Info("PocMsGateway", "1.0.0")
+        Info = new Info("DontForgetGateway", "1.0.0")
         {
             Description = "Documentação AsyncAPI do Gateway de Mensageria"
         },
@@ -138,7 +138,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "PocMsGateway API v1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "DontForgetGateway API v1");
         c.RoutePrefix = "swagger";
 
         c.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None); // inicia recolhido

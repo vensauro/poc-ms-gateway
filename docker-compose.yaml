@@ -3,7 +3,7 @@ version: '3.8'
 services:
   rabbitmq:
     image: rabbitmq:3-alpine
-    container_name: rabbitmq
+    # container_name: rabbitmq
     restart: unless-stopped
     networks:
       - app_network
@@ -20,9 +20,9 @@ services:
       timeout: 5s
       retries: 5
 
-  poc-ms-gateway:
-    image: poc-ms-gateway
-    container_name: poc-ms-gateway
+  dont-forget-gateway:
+    image: dont-forget-gateway
+    # container_name: dont-forget-gateway
     build:
       context: .
       dockerfile: Dockerfile
@@ -48,4 +48,5 @@ volumes:
 
 networks:
   app_network:
-    driver: bridge
+    name: dontforgetgateway_app_network
+    # name: pocmsgateway_app_network

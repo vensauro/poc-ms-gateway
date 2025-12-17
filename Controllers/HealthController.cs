@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace PocMsGateway.Controllers;
+namespace DontForgetGateway.Controllers;
 
 [Route("health-ctrl")]
 [ApiController]

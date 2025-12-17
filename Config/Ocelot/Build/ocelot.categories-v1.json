@@ -26,7 +26,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "ms-node",
+          "Host": "dont-forget-tasks",
           "Port": "3000"
         }
       ],
@@ -43,7 +43,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "ms-node",
+          "Host": "dont-forget-tasks",
           "Port": "3000"
         }
       ],
