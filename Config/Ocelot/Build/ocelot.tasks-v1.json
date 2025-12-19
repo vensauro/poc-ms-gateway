@@ -27,7 +27,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "dont-forget-tasks",
-          "Port": "3000"
+          "Port": "3002"
         }
       ],
       "AuthenticationOptions": {
@@ -44,7 +44,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "dont-forget-tasks",
-          "Port": "3000"
+          "Port": "3002"
         }
       ],
       "AuthenticationOptions": {
